@@ -28,24 +28,7 @@ public class StockExchangeService {
         stocksList.add(stock3);
         stocksList.add(stock4);
 
-        Collections.sort(stocksList, new Comparator<Stocks>() {
-            public int compare(Stocks s1, Stocks s2) {
-                if(s1.getRatePerKG()>s2.getRatePerKG()){
-                    return 1;
-                } else if(s1.getRatePerKG()<s2.getRatePerKG()) {
-                    return -1;
-                } else {
-                    if (s1.getTimeStamp().isAfter(s2.getTimeStamp())) {
-                        return 1;
-                    } else if (s2.getTimeStamp().isAfter(s1.getTimeStamp())) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
-            }
-        });
-
+        sortStocksList(stocksList);
    }
 
     /**
@@ -100,6 +83,9 @@ public class StockExchangeService {
      * @param stocksListReq
      */
     public void initializeStocksList(List<Stocks> stocksListReq){
+
+        sortStocksList(stocksListReq);
+        stocksList = new ArrayList<>();
         stocksList = (ArrayList<Stocks>)stocksListReq;
     }
 
@@ -109,6 +95,26 @@ public class StockExchangeService {
      */
     public List<Stocks> getStocksList() {
         return stocksList;
+    }
+
+    private static void sortStocksList(List<Stocks> list){
+        Collections.sort(list, new Comparator<Stocks>() {
+            public int compare(Stocks s1, Stocks s2) {
+                if(s1.getRatePerKG()>s2.getRatePerKG()){
+                    return 1;
+                } else if(s1.getRatePerKG()<s2.getRatePerKG()) {
+                    return -1;
+                } else {
+                    if (s1.getTimeStamp().isAfter(s2.getTimeStamp())) {
+                        return 1;
+                    } else if (s2.getTimeStamp().isAfter(s1.getTimeStamp())) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+        });
     }
 
 }
