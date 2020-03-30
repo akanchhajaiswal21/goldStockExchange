@@ -84,6 +84,7 @@ public class StockExchangeService {
      */
     public void initializeStocksList(List<Stocks> stocksListReq){
 
+        //Sorting the list of stocks and then storing them in the cache
         sortStocksList(stocksListReq);
         stocksList = new ArrayList<>();
         stocksList = (ArrayList<Stocks>)stocksListReq;
