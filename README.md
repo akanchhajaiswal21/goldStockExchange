@@ -42,7 +42,7 @@ Sample Inout : [
 ]
 Sample output : Done
 
-3)URL : http://localhost:8080/goldStockExchange/getCurrentStocksList
+3) URL : http://localhost:8080/goldStockExchange/getCurrentStocksList
 Http Method type :  GET
 Description : It gives the realtime status of all the stocks
 No input is required
