@@ -32,14 +32,19 @@ public class GoldStockExchangeController {
                 for(Stocks obj : resturnStocksStatus) {
                     response = response +obj.toString()+"\n";
                 }
-            } catch (CloneNotSupportedException e) {
-                response = "Some issue occured... Please try again later";
+            } catch (Exception e) {
+                response = e.getMessage();
             }
 
         }
         return response;
     }
 
+    /**
+     * Function to initialize the gold stocks
+     * @param stocksList
+     * @return
+     */
     @RequestMapping("initializeStocks")
     public String initializeStocks(@RequestBody List<Stocks> stocksList) {
         if(null!=stocksList && stocksList.size()!=0) {
@@ -48,6 +53,10 @@ public class GoldStockExchangeController {
         return "Done";
     }
 
+    /**
+     * Function to get the current stocks status
+     * @return
+     */
     @RequestMapping("getCurrentStocksList")
     public  List<Stocks> getCurrentStocksList() {
         return stockService.getStocksList();

@@ -37,42 +37,56 @@ public class StockExchangeService {
      * @return
      * @throws CloneNotSupportedException
      */
-    public List<Stocks> getCurrentStocksStatusAfterBuying(String buyerRequest) throws CloneNotSupportedException {
+    public List<Stocks> getCurrentStocksStatusAfterBuying(String buyerRequest) throws Exception {
 
-       String[] buyerReqArr = buyerRequest.split("/");
-
-       int stockCount = Integer.parseInt(buyerReqArr[1]);
-       int buyerRate = Integer.parseInt(buyerReqArr[2]);
-
-       LinkedHashMap<String, Stocks> map = new LinkedHashMap<>();
-       for(Stocks stock : stocksList) {
-            map.put(stock.getSellerName(),(Stocks)stock.clone());
+        String[] buyerReqArr = buyerRequest.split("/");
+        int stockCount = 0;
+        int buyerRate = 0;
+        try {
+            stockCount = Integer.parseInt(buyerReqArr[1]);
+            buyerRate = Integer.parseInt(buyerReqArr[2]);
+        } catch (Exception e) {
+            throw new Exception("Stock count or rate is not valid or not present");
         }
 
-       for(String name : map.keySet()) {
-           Stocks stock = map.get(name);
-           if(buyerRate>=stock.getRatePerKG()){
-                if(stockCount>stock.getReqOrAvailAmount()) {
-                    stockCount = stockCount - stock.getReqOrAvailAmount();
-                    stock.setReqOrAvailAmount(0);
-                    map.put(name,stock);
-                } else {
-                    int temp = stock.getReqOrAvailAmount()-stockCount;
-                    stock.setReqOrAvailAmount(temp);
-                    map.put(name,stock);
-                    stockCount = 0;
-                    break;
-                }
-           }
-       }
+        if (stockCount <= 0 || buyerRate <= 0) {
+            throw new Exception("Stock count or rate have negative values");
+        }
 
-       if(stockCount==0) {
-           stocksList = new ArrayList<>();
-           for(String name : map.keySet()) {
-               if(map.get(name).getReqOrAvailAmount()!=0) {
-                   stocksList.add(map.get(name));
-               }
-           }
+
+       try {
+           LinkedHashMap<String, Stocks> map = new LinkedHashMap<>();
+            for (Stocks stock : stocksList) {
+                map.put(stock.getSellerName(), (Stocks) stock.clone());
+            }
+
+            for (String name : map.keySet()) {
+                Stocks stock = map.get(name);
+                if (buyerRate >= stock.getRatePerKG()) {
+                    if (stockCount > stock.getReqOrAvailAmount()) {
+                        stockCount = stockCount - stock.getReqOrAvailAmount();
+                        stock.setReqOrAvailAmount(0);
+                        map.put(name, stock);
+                    } else {
+                        int temp = stock.getReqOrAvailAmount() - stockCount;
+                        stock.setReqOrAvailAmount(temp);
+                        map.put(name, stock);
+                        stockCount = 0;
+                        break;
+                    }
+                }
+            }
+
+            if (stockCount == 0) {
+                stocksList = new ArrayList<>();
+                for (String name : map.keySet()) {
+                    if (map.get(name).getReqOrAvailAmount() != 0) {
+                        stocksList.add(map.get(name));
+                    }
+                }
+            }
+        } catch(Exception e){
+           throw new Exception("Some isseu in proccessing informatio.. Please try again later");
        }
 
         return stocksList;
@@ -98,6 +112,10 @@ public class StockExchangeService {
         return stocksList;
     }
 
+    /**
+     * Sorting the list
+     * @param list
+     */
     private static void sortStocksList(List<Stocks> list){
         Collections.sort(list, new Comparator<Stocks>() {
             public int compare(Stocks s1, Stocks s2) {
