@@ -74,7 +74,8 @@ Sample Output :
   }
 ]
 
- NOTE : A assumption is made that if the number of stocks requested to buy does not satisfy fully, i.e. if 20 stocks if requested 
+ NOTE : The initial stocks list is initialized with th data provided in the problem statement. Which can be reinitialized using the 2nd API. Also if consecutive call of buying is made then the avaialable stocks are not reinitailized every time, it will decrease as the buying api will keep on subtracting the existing stocks
+ A assumption is made that if the number of stocks requested to buy does not satisfy fully, i.e. if 20 stocks if requested 
  and only 10 can be allocated, and rest 10 is not available then no stocks are being allocated and in response the buyer will the 
  existing stocks without any change.
  Another assumption is that seller name is unique while initializing the stocks.
